@@ -12,6 +12,10 @@ class CaughterWindow: UIWindow {
     //MARK: - Private data
     private var caughter: LogCatchAndProcess?
     private var wakeUpBtnPosition = CGPoint(x: sizeOfFloatBtn().edgeWidth, y: 200)
+    /// 记录窗口显示的状态，true为日志窗口，false为悬浮窗口
+    private var windowStatus: Bool = false
+    /// 记录窗口隐藏状态
+    private var windowIsHidden: Bool = false
     
     //MARK: - Subviews
     private lazy var wakeUpView: UIView = {
@@ -123,6 +127,22 @@ class CaughterWindow: UIWindow {
         clear.addAction(clean)
         return clear
     }()
+    private lazy var alertWindowForHidden: UIAlertController = {
+        let clear = UIAlertController(title: "", message: "Do you want to close the LogCatcher?", preferredStyle: .alert)
+        let no = UIAlertAction(title: "No", style: .default, handler: nil)
+        let yes = UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.windowIsHidden = !self.windowIsHidden
+            if self.windowStatus {
+                self.showLogView.isHidden = self.windowIsHidden
+            } else {
+                self.wakeUpBtn.isHidden = self.windowIsHidden
+            }
+        })
+        clear.addAction(no)
+        clear.addAction(yes)
+        return clear
+    }()
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -198,11 +218,13 @@ extension String {
 //MARK: - Button Event Action
 extension CaughterWindow {
     private func showWakeUpView() {
+        self.windowStatus = false
         self.showLogView.isHidden = true
         self.wakeUpView.isHidden = false
     }
     
     private func showShowLogView() {
+        self.windowStatus = true
         self.wakeUpView.isHidden = true
         self.showLogView.isHidden = false
     }
@@ -236,6 +258,23 @@ extension CaughterWindow {
         self.createWakeUpPage()
         self.createShowLogPage()
         self.showWakeUpView()
+    
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("AAAAA"), object: nil, queue: .main) {[weak self] _ in
+            guard let self = self else {
+                return
+            }
+            if self.windowIsHidden {
+                self.windowIsHidden = !self.windowIsHidden
+                if self.windowStatus {
+                    self.showLogView.isHidden = false
+                } else {
+                    self.wakeUpBtn.isHidden = false
+                }
+                return
+            } else {
+                self.rootViewController?.present(self.alertWindowForHidden, animated: true, completion: nil)
+            }
+        }
     }
     
     private func createWakeUpPage() {

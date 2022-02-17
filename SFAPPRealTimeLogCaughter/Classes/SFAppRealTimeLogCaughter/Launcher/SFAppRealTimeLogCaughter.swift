@@ -20,7 +20,7 @@ import UIKit
             if self.shared.showLogWindow == nil {
                 if #available(iOS 13.0, *) {
                     for windowScene: UIWindowScene in ((UIApplication.shared.connectedScenes as? Set<UIWindowScene>)!) {
-                        if windowScene.activationState == .foregroundActive {
+                        if windowScene.activationState == .foregroundActive || windowScene.activationState == .foregroundInactive {
                             self.shared.showLogWindow = CaughterWindow(windowScene: windowScene)
                         }
                     }
@@ -29,6 +29,7 @@ import UIKit
                 }
             }
             self.shared.showLogWindow?.show()
+            print("【日志抓取工具已开启】")
         }
     }
 }
