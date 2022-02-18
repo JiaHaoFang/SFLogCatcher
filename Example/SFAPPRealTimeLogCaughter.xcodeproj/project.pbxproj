@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D9F345326D5F35600F8E9E9 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -23,7 +22,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4D9F345326D5F35600F8E9E9 /* (null) in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,7 +31,7 @@
 /* Begin PBXFileReference section */
 		3266194DA372F2D531BCA2D5 /* Pods_SFAPPRealTimeLogCaughter_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SFAPPRealTimeLogCaughter_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B89C1D3EEF54D1DF12EDEBC /* Pods-SFAPPRealTimeLogCaughter_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SFAPPRealTimeLogCaughter_Tests.debug.xcconfig"; path = "Target Support Files/Pods-SFAPPRealTimeLogCaughter_Tests/Pods-SFAPPRealTimeLogCaughter_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		50B52CDBE38A86E5B4B1895F /* SFAPPRealTimeLogCaughter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SFAPPRealTimeLogCaughter.podspec; path = ../SFAPPRealTimeLogCaughter.podspec; sourceTree = "<group>"; };
+		50B52CDBE38A86E5B4B1895F /* SFAPPRealTimeLogCaughter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SFAPPRealTimeLogCaughter.podspec; path = ../SFAPPRealTimeLogCaughter.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5AE2E735C690F32D65B8A3E8 /* Pods-SFAPPRealTimeLogCaughter_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SFAPPRealTimeLogCaughter_Tests.release.xcconfig"; path = "Target Support Files/Pods-SFAPPRealTimeLogCaughter_Tests/Pods-SFAPPRealTimeLogCaughter_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* SFAPPRealTimeLogCaughter_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SFAPPRealTimeLogCaughter_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -254,7 +252,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SFAPPRealTimeLogCaughter_Example/Pods-SFAPPRealTimeLogCaughter_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SFAPPRealTimeLogCaughter/SFAPPRealTimeLogCaughter.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -417,7 +419,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -435,7 +437,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

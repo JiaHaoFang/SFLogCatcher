@@ -5,7 +5,7 @@ PODS:
   - RxRelay (5.1.3):
     - RxSwift (~> 5)
   - RxSwift (5.1.3)
-  - SFAPPRealTimeLogCaughter (0.10.0):
+  - SFAPPRealTimeLogCaughter (0.12.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
     - SnapKit
@@ -31,7 +31,7 @@ SPEC CHECKSUMS:
   RxCocoa: e2ed092d5432e4296aa818021d27de4090ac0354
   RxRelay: 5a18c2eb2d68326ebaf0112f80d837ae41b92b97
   RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
-  SFAPPRealTimeLogCaughter: cadb26f249d171b20876cf302107dc1fc84564c2
+  SFAPPRealTimeLogCaughter: 6c00d4abd9586630b20a233d50126741a087f374
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
 PODFILE CHECKSUM: ae60e0d7954f6301e2dc3462647a6c0f575ee7dc

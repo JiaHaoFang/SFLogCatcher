@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SFAPPRealTimeLogCaughter'
-  s.version          = '0.12.0'
+  s.version          = '0.13.0'
   s.summary          = 'APP real time log caughter.'
 
 # This description is used to generate tags and improve search results.

@@ -17,8 +17,12 @@ class LogCatchAndProcess {
     private var pipe = Pipe()
     private let fileDelegateQueue = DispatchQueue.global()
     private var source: DispatchSourceRead?
+    private var rootFolderPath: String {
+        guard let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return "" }
+        let logPath = path + "/Log/"
+        return logPath
+    }
     private var filePathStr: [String] = []
-    private var savedFilePathStr: [String] = []
     public var matchStr: String = ""
     public var onOffState: Bool = false
     
@@ -111,10 +115,7 @@ extension LogCatchAndProcess {
 //MARK: - Save
 extension LogCatchAndProcess {
     public func saveFile() -> String {
-        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = allPaths.first!
-        let date = Date()
-        let saveFileFolderStr = documentsDirectory + "/Log/" + date2String(date)
+        let saveFileFolderStr = self.rootFolderPath + date2String(Date())
         self.filePathStr.append(saveFileFolderStr)
         let fm = FileManager.default
         do {
@@ -147,34 +148,20 @@ extension LogCatchAndProcess {
     }
     
     public func saveSuccess() {
-        self.savedFilePathStr = self.filePathStr
+
     }
     
-    public func unsavedFileURL() -> [URL] {
-        var url: [URL] = []
-        var unsavedFilePathStr: [String] = []
-        for item in self.filePathStr {
-            if !self.savedFilePathStr.contains(item) {
-                unsavedFilePathStr.append(item)
-            }
-        }
-        for item in unsavedFilePathStr  {
-            url.append(URL(fileURLWithPath: item))
-        }
-        return url
+    public func fileURL() -> [URL] {
+        return [URL(fileURLWithPath: self.rootFolderPath)]
     }
     
     public func removeAllFile() {
-        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = allPaths.first!
-        let saveFileFolderStr = documentsDirectory + "/Log"
-        LogCatchAndProcess.removeFolder(folderUrl: saveFileFolderStr)
+        LogCatchAndProcess.removeFolder(folderUrl: self.rootFolderPath)
     }
     
     static func removeFolder(folderUrl: String) {
         let fileManger = FileManager.default
-        let filess:[AnyObject]? = fileManger.subpaths(atPath: folderUrl)! as [AnyObject]
-        guard let files = filess else { return }
+        guard let files = fileManger.subpaths(atPath: folderUrl) as [String]? else { return }
         for file in files.reversed()
         {
             do{
@@ -184,7 +171,6 @@ extension LogCatchAndProcess {
                 print("Failder to remove folder...")
             }
         }
-        
     }
 }
 

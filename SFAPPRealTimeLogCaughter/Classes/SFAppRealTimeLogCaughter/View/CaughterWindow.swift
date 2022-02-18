@@ -104,20 +104,19 @@ class CaughterWindow: UIWindow {
         return s
     }()
     private lazy var alertWindowForShare: UIAlertController = {
-        let alert = UIAlertController(title: "Saved successfully!\nFile path is:", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Saved successfully!", message: "", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
         let share = UIAlertAction(title: "Share File", style: .default, handler: { [weak self] _ in
-            guard let self = self else { return }
-            let pasteBoard = UIPasteboard.general
-            pasteBoard.string = alert.message
-            self.sharing()
+//            let pasteBoard = UIPasteboard.general
+//            pasteBoard.string = alert.message
+            self?.sharing()
         })
         alert.addAction(ok)
         alert.addAction(share)
         return alert
     }()
     private lazy var alertWindowForClear: UIAlertController = {
-        let clear = UIAlertController(title: "Screen cleared", message: "Do you want to delete all log files in the local folder at the same time?", preferredStyle: .alert)
+        let clear = UIAlertController(title: "Screen is cleared", message: "", preferredStyle: .alert)
         let no = UIAlertAction(title: "No", style: .default, handler: nil)
         let clean = UIAlertAction(title: "Clean Files", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
@@ -128,7 +127,7 @@ class CaughterWindow: UIWindow {
         return clear
     }()
     private lazy var alertWindowForHidden: UIAlertController = {
-        let clear = UIAlertController(title: "", message: "Do you want to close the LogCatcher?", preferredStyle: .alert)
+        let clear = UIAlertController(title: "Do you want to close the LogCatcher?", message: "", preferredStyle: .alert)
         let no = UIAlertAction(title: "No", style: .default, handler: nil)
         let yes = UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
@@ -230,7 +229,7 @@ extension CaughterWindow {
     }
     
     private func sharing() {
-        let toVC = UIActivityViewController(activityItems: self.caughter?.unsavedFileURL() ?? [], applicationActivities: nil)
+        let toVC = UIActivityViewController(activityItems: self.caughter?.fileURL() ?? [], applicationActivities: .none)
         toVC.completionWithItemsHandler = { [weak self] (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ activityError: Error?) -> Void in
             guard let self = self else { return }
             if completed {
@@ -259,7 +258,7 @@ extension CaughterWindow {
         self.createShowLogPage()
         self.showWakeUpView()
     
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("AAAAA"), object: nil, queue: .main) {[weak self] _ in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("shake"), object: nil, queue: .main) {[weak self] _ in
             guard let self = self else {
                 return
             }
@@ -353,7 +352,6 @@ extension CaughterWindow {
         NSLog("hideBtnAction")
     }
     @objc private func saveBtnAction() {
-        alertWindowForShare.message = self.caughter?.saveFile()
         self.rootViewController?.present(alertWindowForShare, animated: true, completion: nil)
         NSLog("saveBtnAction")
     }

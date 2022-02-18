@@ -27,7 +27,7 @@
 }
 
 - (void)swizzled_motionBegan:(UIEventSubtype)motion withEvent:(nullable UIEvent *)event API_AVAILABLE(ios(3.0)) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AAAAA" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"shake" object:nil];
     if ([self respondsToSelector:@selector(swizzled_motionBegan:withEvent:)]) {
         [self swizzled_motionBegan: motion withEvent: event];
     }
