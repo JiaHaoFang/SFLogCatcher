@@ -84,11 +84,11 @@ class ViewController: UIViewController {
     }
     
     @objc func print1() {
-        NSLog("Queue1")
+        NSLog("Queue1🍔")
     }
     
     @objc func print2() {
-        NSLog("Queue2")
+        NSLog("Queue2🍞")
     }
 
 }

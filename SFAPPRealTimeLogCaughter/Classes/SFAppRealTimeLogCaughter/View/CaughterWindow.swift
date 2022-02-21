@@ -169,14 +169,10 @@ extension CaughterWindow {
 //MARK: - UpdateData Delegate
 extension CaughterWindow: ReceiveDataDelegate {
     func updateData() {
-        guard let caughter = self.caughter else {
-            print("error")
-            return
-        }
-        
+        guard let caughter = self.caughter else { return }
         DispatchQueue.main.async {
-            let attrText = self.setKeywordWithColor(keyword: caughter.matchStr, text: caughter.returnLog(self.searchBar.isActive))
-            self.textView.attributedText = self.searchBar.isActive ? attrText : NSMutableAttributedString(string: caughter.returnLog(self.searchBar.isActive))
+            let attrText = self.setKeywordWithColor(keyword: caughter.matchStr, text: caughter.getLog(self.searchBar.isActive))
+            self.textView.attributedText = self.searchBar.isActive ? attrText : NSMutableAttributedString(string: caughter.getLog(self.searchBar.isActive))
             if self.atuoScrollSwitch.isOn {
                 self.textView.setContentOffset(CGPoint(x: 0, y: self.textView.contentSize.height <= self.textView.frame.height ? 0 : self.textView.contentSize.height - self.textView.frame.height/1.3), animated: false)
             }
@@ -184,33 +180,30 @@ extension CaughterWindow: ReceiveDataDelegate {
     }
     
     private func setKeywordWithColor(keyword: String, text: String) -> NSMutableAttributedString? {
-        let attributeText = NSMutableAttributedString(string: text)
-        let ranges: [Range<String.Index>] = text.ranges(of: keyword)
-        
-        for range in ranges {
-            let location = text.distance(from: text.startIndex, to: range.lowerBound)
-            attributeText.addAttribute(.backgroundColor, value: UIColor.green, range: NSRange(location: location, length: keyword.count))
+        let attrStr = NSMutableAttributedString(string: text)
+        text.enumerateRangeOfString(searchStr: keyword) { (searchRange) in
+            attrStr.addAttribute(.backgroundColor, value: UIColor.green, range: searchRange)
         }
-        return attributeText
+        return attrStr
     }
 }
 
 extension String {
-    func ranges(of string: String) -> [Range<String.Index>] {
-        var rangeArray = [Range<String.Index>]()
-        var searchedRange: Range<String.Index>
-        guard let sr = self.range(of: self) else {
-            return rangeArray
+    fileprivate func enumerateRangeOfString(searchStr: String, block: ((_ searchRange :NSRange) -> Void)) {
+        let separatedArray: [String] = self.components(separatedBy: searchStr)
+        if separatedArray.count < 2 { return }
+        let count = separatedArray.count - 1
+        let length = searchStr.utf16.count
+        var location = 0
+        for (index, item) in separatedArray.enumerated() {
+            if index == count {
+                return
+            } else {
+                location += item.utf16.count
+                block(NSMakeRange(location, length))
+                location += length
+            }
         }
-        searchedRange = sr
-        
-        var resultRange = self.range(of: string, options: .regularExpression, range: searchedRange, locale: nil)
-        while let range = resultRange {
-            rangeArray.append(range)
-            searchedRange = Range(uncheckedBounds: (range.upperBound, searchedRange.upperBound))
-            resultRange = self.range(of: string, options: .regularExpression, range: searchedRange, locale: nil)
-        }
-        return rangeArray
     }
 }
 

@@ -15,8 +15,6 @@ class LogCatchAndProcess {
     var cleanDelegate: ClearDelegate?
     
     private var pipe = Pipe()
-    private let fileDelegateQueue = DispatchQueue.global()
-    private var source: DispatchSourceRead?
     private var rootFolderPath: String {
         guard let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return "" }
         let logPath = path + "/Log/"
@@ -42,7 +40,7 @@ class LogCatchAndProcess {
 
 //MARK: - IO
 extension LogCatchAndProcess {
-    public func returnLog(_ isSearching: Bool) -> String {
+    public func getLog(_ isSearching: Bool) -> String {
         var data: String = ""
         for item in (isSearching ? matchedLogData.getLog().suffix(MaxDisplayNumberInTextView) : rawLogData.getLog().suffix(MaxDisplayNumberInTextView)) {
             data += item
@@ -69,7 +67,7 @@ extension LogCatchAndProcess {
             setvbuf(stdout, nil, _IONBF, 0)
             dup2(pipe.fileHandleForWriting.fileDescriptor, STDERR_FILENO)
             dup2(pipe.fileHandleForWriting.fileDescriptor, STDOUT_FILENO)
-            pipe.fileHandleForReading.readabilityHandler = { [weak self] handle in
+            pipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
                 let data = handle.availableData
                 let str = String(data: data, encoding: .utf8) ?? "<Non-utf8 data of size\(data.count)>\n"
                 self?.rawLogData.setLog(data: str)
