@@ -6,10 +6,8 @@
 //
 
 import Foundation
-import RxSwift
 
 class LogItemCell: UITableViewCell {
-    var cellDisposeBag = DisposeBag()
     
     lazy var logLabel: UILabel = {
         let label = UILabel()
@@ -53,6 +51,5 @@ class LogItemCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        cellDisposeBag = DisposeBag()
     }
 }

@@ -1,55 +1,41 @@
 PODS:
-  - RxCocoa (5.1.10):
-    - RxCocoa/StaticLibrary (= 5.1.10)
-  - RxCocoa/StaticLibrary (5.1.10):
-    - RxRelay
-    - RxSwift
-  - RxRelay (5.1.6):
-    - RxRelay/StaticLibrary (= 5.1.6)
-  - RxRelay/StaticLibrary (5.1.6):
-    - RxSwift
   - RxSwift (5.1.5):
     - RxSwift/StaticLibrary (= 5.1.5)
   - RxSwift/StaticLibrary (5.1.5)
   - SFAPPRealTimeLogCaughter (0.14.0):
-    - RxCocoa (~> 5.0)
-    - RxSwift (~> 5.0)
+    - RxSwift
     - SnapKit
     - SVProgressHUD
-  - SnapKit (5.6.0)
+  - SnapKit (5.0.1)
   - SVProgressHUD (2.2.5)
+  - VSCThirdPartyOpenSource/SnapKit (0.0.1):
+    - SnapKit (= 5.0.1)
   - VSCThirdPartyOpenSource/SVProgressHUD (0.0.1):
     - SVProgressHUD (= 2.2.5)
 
 DEPENDENCIES:
-  - RxCocoa (~> 5.0)
   - SFAPPRealTimeLogCaughter (from `../`)
-  - SnapKit
+  - VSCThirdPartyOpenSource/SnapKit
   - VSCThirdPartyOpenSource/SVProgressHUD
 
 SPEC REPOS:
   https://fangcun.vesync.cn/app/ios/components/VeSyncRepo.git:
-    - RxCocoa
-    - RxRelay
     - RxSwift
-    - VSCThirdPartyOpenSource
-  https://github.com/CocoaPods/Specs.git:
     - SnapKit
     - SVProgressHUD
+    - VSCThirdPartyOpenSource
 
 EXTERNAL SOURCES:
   SFAPPRealTimeLogCaughter:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RxCocoa: 9bac2b9e5912f7df99e69d3f955074113b254711
-  RxRelay: 5f4a131e37ff8d2f1e7665a35bb3f1a8b46a8c1c
   RxSwift: 68ac27875693bba54936cf334e7d04c345faf08f
-  SFAPPRealTimeLogCaughter: 049a3b7007fdfdda0e76d346f1d58013b80727f2
-  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SFAPPRealTimeLogCaughter: 851c40a477181c996f0a0a923db339189e5c981d
+  SnapKit: e2b5a5594e46046a352f2ea23a7b90339bd09466
+  SVProgressHUD: ebc322ca7f7338f74eb2703e9ed6cb3db157d842
   VSCThirdPartyOpenSource: 16f06749b0b9f6cbb5b08471989a7e523bdd3791
 
-PODFILE CHECKSUM: b7700adce70371142c550abf4cff55509aa34928
+PODFILE CHECKSUM: 9f769f5916af88fdd8804591d2305f622029c266
 
 COCOAPODS: 1.10.1
