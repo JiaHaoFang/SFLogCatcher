@@ -7,7 +7,7 @@ platform :ios, '10.0'
 
 target 'SFAPPRealTimeLogCaughter_Example' do
   pod 'SFAPPRealTimeLogCaughter', :path => '../'
-  pod 'SnapKit'
+  pod 'VSCThirdPartyOpenSource/SnapKit'
 #  pod 'RxSwift', '~> 5.0'
   pod 'RxCocoa', '~> 5.0'
   pod 'VSCThirdPartyOpenSource/SVProgressHUD'
