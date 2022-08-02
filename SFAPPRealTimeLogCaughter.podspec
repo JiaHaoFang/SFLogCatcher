@@ -32,7 +32,7 @@ TODO: Add long description of the pod here.
   s.swift_version = '5.0'
 
   s.source_files = 'SFAPPRealTimeLogCaughter/Classes/**/*'
-  
+  s.static_framework = true
   # s.resource_bundles = {
   #   'SFAPPRealTimeLogCaughter' => ['SFAPPRealTimeLogCaughter/Assets/*.png']
   # }
