@@ -1,3 +1,6 @@
+source 'https://fangcun.vesync.cn/app/ios/components/VeSyncRepo.git'
+source 'https://github.com/CocoaPods/Specs.git'# github 公开源
+
 use_frameworks!
 
 platform :ios, '10.0'
@@ -7,6 +10,7 @@ target 'SFAPPRealTimeLogCaughter_Example' do
   pod 'SnapKit'
 #  pod 'RxSwift', '~> 5.0'
   pod 'RxCocoa', '~> 5.0'
+  pod 'VSCThirdPartyOpenSource/SVProgressHUD'
 
 #  target 'SFAPPRealTimeLogCaughter_Tests' do
 #    inherit! :search_paths

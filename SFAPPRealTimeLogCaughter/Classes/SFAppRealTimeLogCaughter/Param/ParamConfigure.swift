@@ -12,7 +12,7 @@ let isIPhoneX = SFMethod.isIPhoneX()
 let SafeAreaBottomH: CGFloat = isIPhoneX ? iPhoneXBottomH : 0
 let iPhoneXBottomH: CGFloat = 34.0
 let SafeAreaTopH: CGFloat = isIPhoneX ? 44.0 : 20.0
-let MaxDisplayNumberInTextView: Int = 100
+let MaxDisplayNumberInTextView: Int = 10000
 let MaxStorageInModel: Int = 2000
 
 struct sizeOfFloatBtn {

@@ -27,9 +27,12 @@ class LogCatchAndProcess {
     private var originalERR: Int32 = dup(STDERR_FILENO)
     private var originalOUT: Int32 = dup(STDOUT_FILENO)
     
+    private var timer: Timer?
+    
     //MARK: - Init
     init() {
         redirect()
+        registTimer()
     }
 
     deinit {
@@ -40,12 +43,8 @@ class LogCatchAndProcess {
 
 //MARK: - IO
 extension LogCatchAndProcess {
-    public func getLog(_ isSearching: Bool) -> String {
-        var data: String = ""
-        for item in (isSearching ? matchedLogData.getLog().suffix(MaxDisplayNumberInTextView) : rawLogData.getLog().suffix(MaxDisplayNumberInTextView)) {
-            data += item
-        }
-        return data
+    public func getLog(_ isSearching: Bool) -> [String] {
+        return (isSearching ? matchedLogData.getLog().suffix(MaxDisplayNumberInTextView).reversed() : rawLogData.getLog().suffix(MaxDisplayNumberInTextView).reversed())
     }
 }
 
@@ -62,23 +61,34 @@ extension LogCatchAndProcess {
 //MARK: - Catch
 extension LogCatchAndProcess {
     func redirect() {
-        if self.onOffState {
-            setvbuf(stderr, nil, _IONBF, 0)
-            setvbuf(stdout, nil, _IONBF, 0)
-            dup2(pipe.fileHandleForWriting.fileDescriptor, STDERR_FILENO)
-            dup2(pipe.fileHandleForWriting.fileDescriptor, STDOUT_FILENO)
-            pipe.fileHandleForReading.readabilityHandler = { [weak self] (handle) in
-                let data = handle.availableData
-                let str = String(data: data, encoding: .utf8) ?? "<Non-utf8 data of size\(data.count)>\n"
-                self?.rawLogData.setLog(data: str)
-                self?.dataFiltAndAppend()
-                self?.receiveDelegate?.updateData()
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            if self.onOffState {
+                setvbuf(stderr, nil, _IONBF, 0)
+                setvbuf(stdout, nil, _IONBF, 0)
+                dup2(self.pipe.fileHandleForWriting.fileDescriptor, STDERR_FILENO)
+                dup2(self.pipe.fileHandleForWriting.fileDescriptor, STDOUT_FILENO)
+                self.pipe.fileHandleForReading.readabilityHandler = { handle in
+                    let data = handle.availableData
+                    let str = String(data: data, encoding: .utf8) ?? "<Non-utf8 data of size\(data.count)>\n"
+                    self.rawLogData.setLog(data: str)
+                    self.dataFiltAndAppend()
+                }
+            } else {
+                dup2(self.originalERR, STDERR_FILENO)
+                dup2(self.originalOUT, STDOUT_FILENO)
             }
-        } else {
-            dup2(self.originalERR, STDERR_FILENO)
-            dup2(self.originalOUT, STDOUT_FILENO)
+//            self.receiveDelegate?.updateData()
         }
-        self.receiveDelegate?.updateData()
+    }
+    
+    func registTimer() {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            if self.onOffState {
+                self.receiveDelegate?.updateData()
+            }
+        }
+        self.timer?.fire()
     }
 }
 

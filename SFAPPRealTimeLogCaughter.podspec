@@ -44,4 +44,5 @@ TODO: Add long description of the pod here.
   s.dependency 'SnapKit'
   s.dependency 'RxSwift', '~> 5.0'
   s.dependency 'RxCocoa', '~> 5.0'
+  s.dependency 'SVProgressHUD'
 end

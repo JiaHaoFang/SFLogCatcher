@@ -7,6 +7,9 @@
 
 import UIKit
 import SnapKit
+import SVProgressHUD
+
+private let LogItemCellName: String = "aaa"
 
 class CaughterWindow: UIWindow {
     //MARK: - Private data
@@ -16,6 +19,8 @@ class CaughterWindow: UIWindow {
     private var windowStatus: Bool = false
     /// 记录窗口隐藏状态
     private var windowIsHidden: Bool = false
+    /// rlog
+    private var logAttr: [NSMutableAttributedString] = []
     
     //MARK: - Subviews
     private lazy var wakeUpView: UIView = {
@@ -83,32 +88,29 @@ class CaughterWindow: UIWindow {
         sb.searchDelegate = self.caughter
         return sb
     }()
-    private lazy var textView: UITextView = {
-        let tv = UITextView()
-        tv.backgroundColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 0.6)
-        tv.textColor = .black
-        tv.font = UIFont.systemFont(ofSize: 14)
-        tv.textAlignment = .left
-        tv.layer.cornerRadius = 12
-        tv.layer.masksToBounds = true
-        tv.isScrollEnabled = true
-        tv.layoutManager.allowsNonContiguousLayout = false
-        tv.isEditable = false
-        tv.text = ""
-        tv.isSelectable = true
-        return tv
-    }()
-    private lazy var atuoScrollSwitch: UISwitch = {
-        let s = UISwitch()
-        s.isOn = true
-        return s
+    private lazy var tableView: UITableView = {
+        let tableview = UITableView()
+        tableview.delegate = self
+        tableview.dataSource = self
+        tableview.tableFooterView = UIView()
+        tableview.backgroundColor = .clear
+        tableview.showsVerticalScrollIndicator = false
+        tableview.rowHeight = UITableView.automaticDimension
+        tableview.estimatedRowHeight = 1
+        tableview.separatorStyle = .singleLine
+//        if #available(iOS 15.0, *) {
+//            self.setValue(0, forKey: "sectionHeaderTopPadding")
+//        }
+        tableview.register(LogItemCell.classForCoder(), forCellReuseIdentifier: LogItemCellName)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(processGesture(gesture:)))
+        longPress.minimumPressDuration = 0.5
+        tableview.addGestureRecognizer(longPress)
+        return tableview
     }()
     private lazy var alertWindowForShare: UIAlertController = {
         let alert = UIAlertController(title: "Saved successfully!", message: "", preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
         let share = UIAlertAction(title: "Share File", style: .default, handler: { [weak self] _ in
-//            let pasteBoard = UIPasteboard.general
-//            pasteBoard.string = alert.message
             self?.sharing()
         })
         alert.addAction(ok)
@@ -171,11 +173,10 @@ extension CaughterWindow: ReceiveDataDelegate {
     func updateData() {
         guard let caughter = self.caughter else { return }
         DispatchQueue.main.async {
-            let attrText = self.setKeywordWithColor(keyword: caughter.matchStr, text: caughter.getLog(self.searchBar.isActive))
-            self.textView.attributedText = self.searchBar.isActive ? attrText : NSMutableAttributedString(string: caughter.getLog(self.searchBar.isActive))
-            if self.atuoScrollSwitch.isOn {
-                self.textView.setContentOffset(CGPoint(x: 0, y: self.textView.contentSize.height <= self.textView.frame.height ? 0 : self.textView.contentSize.height - self.textView.frame.height/1.3), animated: false)
-            }
+            self.logAttr = caughter.getLog(self.searchBar.isActive).map({ item in
+                return self.setKeywordWithColor(keyword: caughter.matchStr, text: item)!
+            })
+            self.tableView.reloadData()
         }
     }
     
@@ -286,8 +287,8 @@ extension CaughterWindow {
         self.showLogView.addSubview(clearBtn)
         self.showLogView.addSubview(onOffBtn)
         self.showLogView.addSubview(searchBar)
-        self.showLogView.addSubview(textView)
-        self.showLogView.addSubview(atuoScrollSwitch)
+//        self.showLogView.addSubview(textView)
+        self.showLogView.addSubview(tableView)
         
         self.hideBtn.snp.makeConstraints{ (make) in
             make.top.equalToSuperview().offset(10)
@@ -319,15 +320,11 @@ extension CaughterWindow {
             make.right.equalToSuperview().offset(-210)
             make.left.equalToSuperview()
         }
-        self.textView.snp.makeConstraints{ (make) in
+        self.tableView.snp.makeConstraints{ (make) in
             make.top.equalToSuperview().offset(46 + 10)
             make.bottom.equalToSuperview().offset(-10)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
-        }
-        self.atuoScrollSwitch.snp.makeConstraints{ (make) in
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalToSuperview().offset(60)
         }
         
         self.searchBar.textField.delegate = self.searchBar
@@ -461,5 +458,36 @@ extension CaughterWindow {
             }
         }
         return nil
+    }
+}
+
+extension CaughterWindow: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.logAttr.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LogItemCellName) as? LogItemCell else { return UITableViewCell() }
+        cell.bind(context: self.logAttr[indexPath.item])
+        return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
+}
+
+extension CaughterWindow {
+    @objc func processGesture(gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            let touchPoint = gesture.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchPoint) {
+                print("Long pressed row: \(indexPath.row)")
+                
+                UIPasteboard.general.string = self.logAttr[indexPath.item].string
+                SVProgressHUD.showSuccess(withStatus: "复制成功")
+            }
+        }
     }
 }
