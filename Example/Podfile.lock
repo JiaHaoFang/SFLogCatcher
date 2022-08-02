@@ -1,11 +1,7 @@
 PODS:
-  - RxSwift (5.1.5):
-    - RxSwift/StaticLibrary (= 5.1.5)
-  - RxSwift/StaticLibrary (5.1.5)
   - SFAPPRealTimeLogCaughter (0.14.0):
-    - RxSwift
-    - SnapKit
-    - SVProgressHUD
+    - VSCThirdPartyOpenSource/SnapKit
+    - VSCThirdPartyOpenSource/SVProgressHUD
   - SnapKit (5.0.1)
   - SVProgressHUD (2.2.5)
   - VSCThirdPartyOpenSource/SnapKit (0.0.1):
@@ -20,7 +16,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://fangcun.vesync.cn/app/ios/components/VeSyncRepo.git:
-    - RxSwift
     - SnapKit
     - SVProgressHUD
     - VSCThirdPartyOpenSource
@@ -30,12 +25,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RxSwift: 68ac27875693bba54936cf334e7d04c345faf08f
-  SFAPPRealTimeLogCaughter: 851c40a477181c996f0a0a923db339189e5c981d
+  SFAPPRealTimeLogCaughter: ed8871a70558c66bdf9cb7bd470549c25036ad35
   SnapKit: e2b5a5594e46046a352f2ea23a7b90339bd09466
   SVProgressHUD: ebc322ca7f7338f74eb2703e9ed6cb3db157d842
   VSCThirdPartyOpenSource: 16f06749b0b9f6cbb5b08471989a7e523bdd3791
 
-PODFILE CHECKSUM: 9f769f5916af88fdd8804591d2305f622029c266
+PODFILE CHECKSUM: 038ec699877ba2c7476d78975f75a5690a039f65
 
 COCOAPODS: 1.10.1

@@ -41,8 +41,8 @@ TODO: Add long description of the pod here.
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.frameworks = 'UIKit'
-  s.dependency 'SnapKit'
-  s.dependency 'SVProgressHUD'
+  s.dependency 'VSCThirdPartyOpenSource/SnapKit'
+  s.dependency 'VSCThirdPartyOpenSource/SVProgressHUD'
   
   s.pod_target_xcconfig = {
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'

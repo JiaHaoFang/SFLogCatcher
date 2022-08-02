@@ -9,8 +9,6 @@ target 'SFAPPRealTimeLogCaughter_Example' do
   pod 'SFAPPRealTimeLogCaughter', :path => '../'
   
   pod 'VSCThirdPartyOpenSource/SnapKit'
-#  pod 'VSCThirdPartyOpenSource/RxSwift'
-#  pod 'VSCThirdPartyOpenSource/RxCocoa'
   pod 'VSCThirdPartyOpenSource/SVProgressHUD'
 
 #  target 'SFAPPRealTimeLogCaughter_Tests' do
